@@ -64,6 +64,12 @@ public class Player extends Entity{
 
     }
     public void update(){
+
+        movement();
+
+
+    }
+    public void movement(){
         Images img= new Images(gp);
 
 
@@ -113,11 +119,7 @@ public class Player extends Entity{
         if(x<=0){
             x=0;
         }
-
-
-
     }
-
 
     public void draw(Graphics2D g)  {
 
