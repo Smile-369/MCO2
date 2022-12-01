@@ -1,6 +1,8 @@
 package GameProperties;
 import Display.GamePanel;
 import Display.Images;
+import Display.KeyHandler;
+import Entitiy.Player;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -10,12 +12,15 @@ import java.util.List;
 
 public class TileManager {
     GamePanel gp;
+    Player player;
     public List<List<Tile>> tiles= new ArrayList<>();
 
+    KeyHandler kh= new KeyHandler();
 
-
-    public TileManager(GamePanel gp){
+    public TileManager(GamePanel gp,KeyHandler kh,Player player){
     this.gp=gp;
+    this.kh=kh;
+    this.player=player;
     }
     public void initTiles(){
         int count = 0;
@@ -77,10 +82,21 @@ public class TileManager {
         }
 
     }
+    public boolean checkPlotInteraction(){
+        for(int i = 0 ; i < tiles.size();i ++ ){
+            for(int j = 0 ; j < tiles.get(i).size(); j++){
+                if (tiles.get(i).get(j) instanceof Plot &&kh.menuPressed&&player.x>=tiles.get(i).get(j).x){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public void draw(Graphics2D g)  {
         for(int i = 0;i<tiles.size();i++) {
             for (int j = 0; j < tiles.get(i).size(); j++) {
                 g.drawImage(tiles.get(i).get(j).img,tiles.get(i).get(j).x,tiles.get(i).get(j).y,gp.tileSize,gp.tileSize,null);
+
             }
         }
     }

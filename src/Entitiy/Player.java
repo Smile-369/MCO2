@@ -1,5 +1,6 @@
 package Entitiy;
 import Display.*;
+import GameProperties.TileManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -31,7 +32,7 @@ public class Player extends Entity{
     public void setDefaultValues(){
         this.x=(gp.screenWidth/2);
         this.y=(gp.screenHeight/2);
-        this.speed=4;
+        this.speed=gp.tileSize;
         this.coins = 100;
         this.level = 0;
         this.experience = 0;
@@ -69,6 +70,7 @@ public class Player extends Entity{
 
 
     }
+
     public void movement(){
         Images img= new Images(gp);
 
@@ -122,8 +124,9 @@ public class Player extends Entity{
     }
 
     public void draw(Graphics2D g)  {
-
+        String cords=String.format("%d %d",x,y);
         g.drawImage(animated,x,y,gp.tileSize,gp.tileSize,null);
+        g.drawString(cords,x,y);
     }
     /**
      * checks and calculates the level of the player based the experience value

@@ -24,8 +24,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     public int FPS=60;
     Thread gameThread;
-    TileManager tiles=new TileManager(this);
     Player player=new Player(this,kh);
+    TileManager tiles=new TileManager(this,kh,player);
+    Menus menus=new Menus(this,kh,tiles);
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
         this.setBackground(Color.white);
@@ -43,19 +44,20 @@ public class GamePanel extends JPanel implements Runnable {
     @Override
     public void run() {
         tiles.initTiles();
+        menus.initMenus();
+        double updateCounter=0;
         double drawInterval=1000000000/FPS;
         double nxtDrawTime=System.nanoTime()+drawInterval;
         while (gameThread!=null){
-
-
-            update();
-            repaint();
+                update();
+                repaint();
             try{
                 double rmngTime=nxtDrawTime-System.nanoTime();
                 rmngTime =rmngTime/1000000;
                 if(rmngTime<0){
                     rmngTime=0;
                 }
+
                 Thread.sleep((long)rmngTime);
                 nxtDrawTime+=drawInterval;
             }catch (InterruptedException e){
@@ -73,9 +75,9 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2=(Graphics2D)g;
 
-
         tiles.draw(g2);
         player.draw(g2);
+        menus.draw(g2);
 
         g2.dispose();
     }
