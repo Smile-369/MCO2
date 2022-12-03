@@ -2,7 +2,6 @@ package Display;
 
 import GameProperties.Tile;
 import GameProperties.TileManager;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -16,7 +15,9 @@ public class TextBox {
     Images img;
     BufferedImage[][] textBox;
     KeyHandler kh=new KeyHandler();
+    Text txt;
     int[] corner;
+    public int[] textCords=new int[2];
     TextBox(GamePanel gp, KeyHandler kh,TileManager tm,int[] corner){
         this.gp=gp;
         this.kh=kh;
@@ -25,6 +26,7 @@ public class TextBox {
         img=new Images(gp);
         img.imagemapSet("/res/Tiles/TextBox.png",8);
         textBox=img.tileImg;
+        txt=new Text(gp, kh,tm);
     }
     public void initTextBox(){
 
@@ -47,8 +49,12 @@ public class TextBox {
             for (int j = corner[2]; j< corner[3];j++){
                 if(i==corner[0]&&j==corner[2]){
                     textBoxTiles.get(i).get(j).img=textBox[1][1];
+                    this.textCords[0]=textBoxTiles.get(i).get(j).x;
+                    this.textCords[1]=textBoxTiles.get(i).get(j).y;
+
                 }else if(i==corner[0]&&j==corner[3]-1){
-                    textBoxTiles.get(i).get(j).img=textBox[3][1];;
+                    textBoxTiles.get(i).get(j).img=textBox[3][1];
+
                 }
                 else if(i==corner[1]-1&&j==corner[2]){
                     textBoxTiles.get(i).get(j).img=textBox[1][3];
@@ -74,18 +80,26 @@ public class TextBox {
             }
         }
     }
+    String[] splitLine(String input){
+        String[] output=input.split("@");
 
+        return output;
+    }
 
-    public void draw(Graphics2D g, boolean condition)  {
-
-
+    public void draw(Graphics2D g, boolean condition,String Text)  {
+        int i= 0 ;
+        String [] drawn=splitLine(Text);
         if (condition){
-            for(int i = 0;i<textBoxTiles.size();i++){
+            for(i = 0;i<textBoxTiles.size();i++){
                 for (int j = 0; j < textBoxTiles.get(i).size(); j++) {
                     g.drawImage(textBoxTiles.get(i).get(j).img,textBoxTiles.get(i).get(j).x,textBoxTiles.get(i).get(j).y,gp.tileSize,gp.tileSize,null);
                 }
             }
+            for(i = 0; i<drawn.length;i++){
+                txt.draw(g, drawn[i], textCords[0] + gp.tileSize, textCords[1] + gp.tileSize*(i+1), 2);
+            }
 
         }
+
     }
 }

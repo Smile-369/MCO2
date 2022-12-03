@@ -25,11 +25,13 @@ public class GamePanel extends JPanel implements Runnable {
     public int FPS=60;
     Thread gameThread;
     Player player=new Player(this,kh);
-    TileManager tm=new TileManager(this,kh,player);
+    TileManager tm=new TileManager(this,kh);
     int[] menuCorner={(maxScreenRow*3/4),maxScreenRow,0, maxScreenColumn*3/4};
     TextBox menus= new TextBox(this,kh,tm,menuCorner);
     int[] textCorner={(maxScreenRow/5),maxScreenRow*4/5,maxScreenColumn*2/3, maxScreenColumn};
-    TextBox text =new TextBox(this,kh,tm,textCorner);
+    TextBox textBox =new TextBox(this,kh,tm,textCorner);
+    Text txt= new Text(this,kh,tm);
+
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
         this.setBackground(Color.white);
@@ -48,7 +50,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void run() {
         tm.initTiles();
         menus.initTextBox();
-        text.initTextBox();
+        textBox.initTextBox();
         double drawInterval=1000000000/FPS;
         double nxtDrawTime=System.nanoTime()+drawInterval;
         while (gameThread!=null){
@@ -80,8 +82,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         tm.draw(g2);
         player.draw(g2);
-        menus.draw(g2,kh.menuPressed);
-
+        menus.draw(g2,kh.menuPressed,"");
+        textBox.draw(g2,true,"The quick Brown @Fox Jumped");
 
         g2.dispose();
     }

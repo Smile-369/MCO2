@@ -125,9 +125,7 @@ public class Player extends Entity{
     }
 
     public void draw(Graphics2D g)  {
-        String cords=String.format("%d %d",x,y);
         g.drawImage(animated,x,y,gp.tileSize,gp.tileSize,null);
-        g.drawString(cords,x,y);
     }
     /**
      * checks and calculates the level of the player based the experience value

@@ -2,7 +2,7 @@ package GameProperties;
 import Display.GamePanel;
 import Display.Images;
 import Display.KeyHandler;
-import Entitiy.Player;
+
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TileManager {
     GamePanel gp;
-    Player player;
+
     public List<List<Tile>> tiles= new ArrayList<>();
 
     BufferedImage[][] tileImg;
@@ -20,11 +20,10 @@ public class TileManager {
 
     Images img;
 
-    public TileManager(GamePanel gp,KeyHandler kh,Player player){
+    public TileManager(GamePanel gp,KeyHandler kh){
 
     this.gp=gp;
     this.kh=kh;
-    this.player=player;
     this.img=new Images(gp);
     img.imagemapSet("/res/Tiles/Tilemap1.png",4);
     this.tileImg=img.tileImg;
