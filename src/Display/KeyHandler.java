@@ -33,7 +33,13 @@ public class KeyHandler implements KeyListener {
         if(code==KeyEvent.VK_X){
             xPressed=true;
         }
-
+        if(code==KeyEvent.VK_ENTER){
+            if(!menuPressed){
+                menuPressed=true;
+            }else{
+                menuPressed=false;
+            }
+        }
     }
 
     @Override
@@ -53,11 +59,11 @@ public class KeyHandler implements KeyListener {
         }
         if(code==KeyEvent.VK_C){
             cPressed=false;
-            menuPressed=true;
+
         }
         if(code==KeyEvent.VK_X){
             xPressed=false;
-            menuPressed=false;
+
         }
 
     }

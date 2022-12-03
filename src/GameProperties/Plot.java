@@ -13,6 +13,7 @@ public class Plot extends Tile {
     public boolean hasRock;
     public boolean isOccupied;
     public boolean hasCrop;
+    Images img;
 
     Scanner Sc = new Scanner(System.in);
 
@@ -39,10 +40,12 @@ public class Plot extends Tile {
         if (!this.hasCrop || !this.isPlowed) {
             System.out.printf("You have plowed the tile in row %d column %d\n", row, column);
             this.isPlowed = true;
+
             player.experience = player.experience + 0.5f;
         } else {
             System.out.println("This tile has been plowed");
         }
+
     }
 
     /**

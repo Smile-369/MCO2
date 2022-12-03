@@ -11,13 +11,15 @@ import java.nio.Buffer;
 public class Player extends Entity{
     GamePanel gp;
     KeyHandler kh = new KeyHandler();
-    BufferedImage animated=null;
+    BufferedImage[][] playerImg;
+    BufferedImage animated;
     int direction=1;
     public int coins;
     public int level;
     public float experience;
     public String name;
     int[] imageCount= {0,0,0,0};
+    Images img;
     public Player() {
 
     }
@@ -25,14 +27,14 @@ public class Player extends Entity{
         this.kh=kh;
         this.gp=gp;
         setDefaultValues();
-
-
-
+        img= new Images(gp);
+        img.imagemapSet("/res/player/Player1.png",2);
+        playerImg=img.tileImg;
     }
     public void setDefaultValues(){
         this.x=(gp.screenWidth/2);
         this.y=(gp.screenHeight/2);
-        this.speed=gp.tileSize;
+        this.speed=4;
         this.coins = 100;
         this.level = 0;
         this.experience = 0;
@@ -66,47 +68,46 @@ public class Player extends Entity{
     }
     public void update(){
 
-        movement();
+        if(!kh.menuPressed){
+            movement();
+        }
 
 
     }
 
     public void movement(){
-        Images img= new Images(gp);
-
-
         for(int i = 0 ; i<4;i++){
             if(imageCount[i]>30){
                 imageCount[i]=1;
             }
         }
         if(x==x&&y==y){
-            animated = img.getSubImage(direction,2,"/res/player/Player1.png",2 );
+            animated = playerImg[direction][2];
 
         }
         if(kh.upPressed==true){
             y-=speed;
             direction=3;
-            animated = img.getSubImage(direction,getColumn(imageCount[0]),"/res/player/Player1.png",2 );
+            animated = playerImg[direction][getColumn(imageCount[0])];
             imageCount[0]++;
 
         }
         if(kh.downPressed==true){
             y+=speed;
             direction=1;
-            animated = img.getSubImage(direction, getColumn(imageCount[1]),"/res/player/Player1.png",2);
+            animated = playerImg[direction][getColumn(imageCount[1])];
             imageCount[1]++;
         }
         if(kh.leftPressed==true){
             x-=speed;
             direction=4;
-            animated = img.getSubImage(direction, getColumn(imageCount[2]),"/res/player/Player1.png",2);
+            animated = playerImg[direction][getColumn(imageCount[2])];
             imageCount[2]++;
         }
         if(kh.rightPressed==true){
             x+=speed;
             direction=2;
-            animated = img.getSubImage(direction, getColumn(imageCount[3]),"/res/player/Player1.png",2);
+            animated = playerImg[direction][getColumn(imageCount[3])];
             imageCount[3]++;
         }
         if(y>= gp.screenHeight- gp.tileSize){
