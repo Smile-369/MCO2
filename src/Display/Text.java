@@ -37,7 +37,7 @@ public class Text{
             else if(i>='X'&&i<='k') {
                 ascii[i]=characters[3][i-'X'+1];
             }
-            else if(i>='l'&&i<='z') {
+            else if(i>='l'&&i<='}') {
                 ascii[i]=characters[4][i-'l'+1];
             }
         }
@@ -45,7 +45,7 @@ public class Text{
     public void draw(Graphics2D g, String word,int x,int y,int scale){
         for(int i = 0; i< word.length();i++){
             char ch= word.charAt(i);
-            g.drawImage(ascii[(int)ch],x+(i*(gp.tileSize*3/4)/scale),y,gp.tileSize/scale,gp.tileSize/scale,null);
+            g.drawImage(ascii[(int)ch],x+(i*(gp.tileSize*3/4)/scale)-(gp.tileSize/5),y-gp.tileSize/4,gp.tileSize/scale,gp.tileSize/scale,null);
         }
     }
 }

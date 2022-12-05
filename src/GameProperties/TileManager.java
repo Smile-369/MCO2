@@ -36,46 +36,54 @@ public class TileManager {
             for (int j = 0; j < gp.maxScreenColumn; j++) {
                 tiles.get(i).add(new Tile());
                 if((i>=gp.maxScreenRow/4&&i<gp.maxScreenRow*3/4)&&(j>= gp.maxScreenColumn/4&&j<gp.maxScreenColumn*3/4)){
-                    tiles.get(i).set(j,new Plot());
+                    tiles.get(i).set(j,new Plot(gp));
                 }
                 tiles.get(i).get(j).x=i*gp.tileSize;
                 tiles.get(i).get(j).y=j*gp.tileSize;
 
             }
         }
-
         setTileImage();
+
+    }
+    public void update(){
+
         setPlots();
 
     }
-    public void setPlots(){
-
-        for(int i=tiles.size()/4;i<tiles.size()*3/4;i++){
-            for(int j= tiles.get(i).size()/4;j<tiles.get(i).size()*3/4;j++){
-                if((i==tiles.size()/4&&j==(tiles.get(i).size()/4))) {
-                    tiles.get(i).get(j).img=img.tileImg[4][2];
+    public void setPlots() {
+        int[] corners = {tiles.size() / 4 , tiles.size() * 3 / 4 , tiles.get(1).size() / 4 , tiles.get(1).size() * 3 / 4};
+        for (int i = corners[0]; i < corners[1]; i++) {
+            for (int j = corners[2]; j < corners[3]; j++) {
+                if(((Plot) tiles.get(i).get(j)).isPlowed){
+                    if ((i == corners[0] && j == (corners[2]))) {
+                        tiles.get(i).get(j).img = img.tileImg[4][2];
+                    } else if ((i == corners[0] && j == (corners[3]) - 1)) {
+                        tiles.get(i).get(j).img = tileImg[6][2];
+                    } else if ((i == (corners[1]) - 1 && j == (corners[3]) - 1)) {
+                        tiles.get(i).get(j).img = tileImg[6][4];
+                    } else if ((i == (corners[1]) - 1 && j == (corners[2]))) {
+                        tiles.get(i).get(j).img = tileImg[4][4];
+                    } else if ((i > corners[0] && j == (corners[3]) - 1)) {
+                        tiles.get(i).get(j).img = tileImg[6][3];
+                    } else if ((i == (corners[1]) - 1 && j > (corners[2]))) {
+                        tiles.get(i).get(j).img = tileImg[5][4];
+                    } else if ((i < (corners[1]) - 1 && j == (corners[2]))) {
+                        tiles.get(i).get(j).img = tileImg[4][3];
+                    } else if ((i == corners[0] && j < (corners[3]) - 1)) {
+                        tiles.get(i).get(j).img = tileImg[5][2];
+                    } else {
+                        tiles.get(i).get(j).img = tileImg[5][3];
+                    }
+                } else {
+                    tiles.get(i).get(j).img = tileImg[5][5];
                 }
-                else if((i==tiles.size()/4&&j==(tiles.get(i).size()*3/4)-1)){
-                    tiles.get(i).get(j).img=tileImg[6][2];
-                }else if((i==(tiles.size()*3/4)-1&& j==(tiles.get(i).size()*3/4)-1)){
-                    tiles.get(i).get(j).img=tileImg[6][4];
-                }else if((i==(tiles.size()*3/4)-1&&j==(tiles.get(i).size()/4))){
-                    tiles.get(i).get(j).img=tileImg[4][4];
-                } else if ((i>tiles.size()/4&&j==(tiles.get(i).size()*3/4)-1)) {
-                    tiles.get(i).get(j).img=tileImg[6][3];
-                } else if ((i==(tiles.size()*3/4)-1&&j>(tiles.get(i).size()/4))) {
-                    tiles.get(i).get(j).img=tileImg[5][4];
-                }else if ((i<(tiles.size()*3/4)-1&&j==(tiles.get(i).size()/4))) {
-                    tiles.get(i).get(j).img=tileImg[4][3];
-                }else if ((i==tiles.size()/4&&j<(tiles.get(i).size()*3/4)-1)) {
-                    tiles.get(i).get(j).img=tileImg[5][2];
-                }else {
-                    tiles.get(i).get(j).img=tileImg[5][3];
-                }
 
+
+                }
             }
         }
-    }
+
 
     public void setTileImage(){
         Images img= new Images(gp);
@@ -94,7 +102,11 @@ public class TileManager {
     public void draw(Graphics2D g)  {
         for(int i = 0;i<tiles.size();i++) {
             for (int j = 0; j < tiles.get(i).size(); j++) {
+
                 g.drawImage(tiles.get(i).get(j).img,tiles.get(i).get(j).x,tiles.get(i).get(j).y,gp.tileSize,gp.tileSize,null);
+                if(tiles.get(i).get(j) instanceof Plot &&((Plot) tiles.get(i).get(j)).hasCrop){
+                    ((Plot)tiles.get(i).get(j)).Crop.draw(g,tiles.get(i).get(j).x,tiles.get(i).get(j).y,gp.tileSize);
+                }
             }
         }
     }

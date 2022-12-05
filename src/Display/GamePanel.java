@@ -20,15 +20,14 @@ public class GamePanel extends JPanel implements Runnable {
     public int screenWidth = maxScreenRow * tileSize;
     public int screenHeight = maxScreenColumn * tileSize;
 
-
-
     public int FPS=60;
     Thread gameThread;
-    Player player=new Player(this,kh);
+
     TileManager tm=new TileManager(this,kh);
-    int[] menuCorner={(maxScreenRow*3/4),maxScreenRow,0, maxScreenColumn*3/4};
+    Player player=new Player(this,kh,tm);
+    int[] menuCorner={(maxScreenRow*3/4-2),maxScreenRow,0, maxScreenColumn*4/5+2};
     TextBox menus= new TextBox(this,kh,tm,menuCorner);
-    int[] textCorner={(maxScreenRow/5),maxScreenRow*4/5,maxScreenColumn*2/3, maxScreenColumn};
+    int[] textCorner={0,4,0, 5};
     TextBox textBox =new TextBox(this,kh,tm,textCorner);
     Text txt= new Text(this,kh,tm);
 
@@ -73,17 +72,18 @@ public class GamePanel extends JPanel implements Runnable {
     }
     public void update(){
         player.update();
+        tm.update();
     }
 
     public void paintComponent(Graphics g){
 
         super.paintComponent(g);
         Graphics2D g2=(Graphics2D)g;
-
+        String playerInfo=String.format("%s @>:%d@Lvl:%d",player.name,player.coins,player.level);
         tm.draw(g2);
         player.draw(g2);
-        menus.draw(g2,kh.menuPressed,"");
-        textBox.draw(g2,true,"The quick Brown @Fox Jumped");
+        menus.draw(g2,kh.menuPressed,"Controls@1 Plow@2 Water@3 Plant@4 Harvest@5 Fertilize@6 Pickaxe@7 Shovel");
+        textBox.draw(g2,kh.menuPressed,playerInfo);
 
         g2.dispose();
     }

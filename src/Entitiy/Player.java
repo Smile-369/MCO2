@@ -1,5 +1,7 @@
 package Entitiy;
 import Display.*;
+import GameProperties.Crop;
+import GameProperties.Plot;
 import GameProperties.TileManager;
 
 import javax.imageio.ImageIO;
@@ -20,16 +22,18 @@ public class Player extends Entity{
     public String name;
     int[] imageCount= {0,0,0,0};
     Images img;
+    TileManager tm;
     public Player() {
 
     }
-    public Player(GamePanel gp, KeyHandler kh){
+    public Player(GamePanel gp, KeyHandler kh,TileManager tm){
         this.kh=kh;
         this.gp=gp;
         setDefaultValues();
         img= new Images(gp);
         img.imagemapSet("/res/player/Player1.png",2);
         playerImg=img.tileImg;
+        this.tm=tm;
     }
     public void setDefaultValues(){
         this.x=(gp.screenWidth/2);
@@ -67,13 +71,14 @@ public class Player extends Entity{
 
     }
     public void update(){
-
+        plotInteraction();
         if(!kh.menuPressed){
             movement();
         }
 
 
     }
+
 
     public void movement(){
         for(int i = 0 ; i<4;i++){
@@ -123,9 +128,21 @@ public class Player extends Entity{
             x=0;
         }
     }
+    public void plotInteraction(){
+        for(int i = 0;i<tm.tiles.size();i++) {
+            for (int j = 0; j < tm.tiles.get(i).size(); j++) {
+                if(x+32>=tm.tiles.get(i).get(j).x&&x+32<tm.tiles.get(i).get(j).x+64&&y+32>=tm.tiles.get(i).get(j).y&&y+32<tm.tiles.get(i).get(j).y+64
+                        &&tm.tiles.get(i).get(j) instanceof Plot&&kh.cPressed){
+                    ((Plot)tm.tiles.get(i).get(j)).plowTile(this);
+                    ((Plot) tm.tiles.get(i).get(j)).plantCrop(this,1);
+                }
+            }
+        }
+    }
 
     public void draw(Graphics2D g)  {
         g.drawImage(animated,x,y,gp.tileSize,gp.tileSize,null);
+
     }
     /**
      * checks and calculates the level of the player based the experience value
@@ -138,5 +155,6 @@ public class Player extends Entity{
             System.out.println("Congratulations your level changed from " + originalLevel + " to " + this.level);
         }
     }
+
 
 }

@@ -40,6 +40,21 @@ public class KeyHandler implements KeyListener {
                 menuPressed=false;
             }
         }
+        if(code==KeyEvent.VK_1){
+
+        }
+        if(code==KeyEvent.VK_2){
+
+        }
+        if(code==KeyEvent.VK_3){
+
+        }
+        if(code==KeyEvent.VK_4){
+
+        }
+        if(code==KeyEvent.VK_5){
+
+        }
     }
 
     @Override

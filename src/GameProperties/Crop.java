@@ -1,5 +1,10 @@
 package GameProperties;
 
+import Display.GamePanel;
+import Display.Images;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 public class Crop {
@@ -26,7 +31,10 @@ public class Crop {
     public int finalHarvestPrice;
     public String type;
     public String name;
-
+    public BufferedImage cropImg;
+    public BufferedImage[][] cropImgs;
+    Images img;
+    GamePanel gp;
     /**
      * this constructor sets everything to null and sets the booleans to false
      */
@@ -58,7 +66,8 @@ public class Crop {
      * @param name      the name of the crop used for determining the values
      * @param plantDate the day which the crop is initialized
      */
-    public Crop(String name, int plantDate) {
+    public Crop(String name, int plantDate,BufferedImage[][] cropImgs) {
+        this.cropImgs=cropImgs;
         this.name = name;
         this.waterCount = 0;
         this.fertCount = 0;
@@ -81,6 +90,7 @@ public class Crop {
                 this.fertilizerMax = 1;
                 this.waterMax = 2;
                 this.waterNeed = 1;
+                this.cropImg=cropImgs[1][2];
             }
             case "Carrot" -> {
                 this.seedPrice = 10;
@@ -94,6 +104,7 @@ public class Crop {
                 this.fertilizerMax = 1;
                 this.waterMax = 2;
                 this.waterNeed = 1;
+                this.cropImg=cropImgs[1][4];
             }
             case "Potato" -> {
                 this.seedPrice = 20;
@@ -107,6 +118,7 @@ public class Crop {
                 this.fertilizerMax = 2;
                 this.waterMax = 4;
                 this.waterNeed = 3;
+                this.cropImg=cropImgs[1][6];
             }
         }
         this.harvestYield = getRandomNumber(productionMin, productionMax + 1);
@@ -162,5 +174,9 @@ public class Crop {
             this.isHarvestable = false;
             this.isWithered = true;
         }
+    }
+    public void draw(Graphics2D g, int x , int y,int tileSize){
+        g.drawImage(this.cropImg,x,y,tileSize,tileSize,null);
+
     }
 }
