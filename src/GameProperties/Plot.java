@@ -1,12 +1,14 @@
 package GameProperties;
+
 import Display.GamePanel;
 import Display.Images;
+import Entitiy.Player;
+import Display.KeyHandler;
+import org.intellij.lang.annotations.Flow;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.CropImageFilter;
-import java.util.Scanner;
-import  Entitiy.*;
+import java.security.Key;
+
 /**
  * this class is the Tile class where it can be plowed oe planted in
  */
@@ -17,27 +19,28 @@ public class Plot extends Tile {
     public boolean hasRock;
     public boolean isOccupied;
     public boolean hasCrop;
-    BufferedImage[][] cropImgs;
+    BufferedImage[][] cropImageMap;
+    KeyHandler kh;
     GamePanel gp;
 
-
-    Scanner Sc = new Scanner(System.in);
 
     /**
      * this constructor sets everything to false and initializes an empty crop
      */
-    public Plot(GamePanel gp) {
+    public Plot(GamePanel gp, KeyHandler kh) {
         this.gp=gp;
+        this.kh=kh;
         this.isPlowed = false;
         this.hasCrop = false;
         this.isOccupied = false;
         this.hasRock = false;
         setCropImages();
+
     }
     public void setCropImages(){
         Images cropImage =new Images(gp);
         cropImage.imagemapSet("/res/Tiles/Crops.png",4);
-        cropImgs=cropImage.tileImg;
+        cropImageMap =cropImage.tileImg;
     }
 
     /**
@@ -49,7 +52,6 @@ public class Plot extends Tile {
         if (!this.hasCrop || !this.isPlowed) {
             this.isPlowed = true;
             player.experience = player.experience + 0.5f;
-        } else {
         }
 
     }
@@ -58,16 +60,11 @@ public class Plot extends Tile {
      * adds to the water counter if there is a crop
      *
      * @param player the player
-     * @param row    the row value
-     * @param column the column value
      */
-    public void waterCrop(Player player, int row, int column) {
+    public void waterCrop(Player player) {
         if (this.hasCrop || this.Crop.waterCount < this.Crop.waterMax) {
-            System.out.printf("You have watered the %s in row %d column %d\n", this.Crop.name, row, column);
             this.Crop.waterCount++;
             player.experience = player.experience + 0.5f;
-        } else {
-            System.out.println("You can not water this tile");
         }
     }
 
@@ -75,17 +72,12 @@ public class Plot extends Tile {
      * adds to the fertilizer counter if there is a crop
      *
      * @param player the player
-     * @param row    the row value
-     * @param column the column value
      */
-    public void fertilizeCrop(Player player, int row, int column) {
+    public void fertilizeCrop(Player player) {
         if (this.hasCrop || this.Crop.fertCount <= this.Crop.fertilizerMax) {
-            System.out.printf("You have fertilized the %s in row %d column %d\n", this.Crop.name, row, column);
             this.Crop.fertCount++;
             player.coins = player.coins - 10;
             player.experience = player.experience + 4.0f;
-        } else {
-            System.out.println("You can not fertilize this crop");
         }
     }
 
@@ -93,18 +85,18 @@ public class Plot extends Tile {
      * harvests the crop in this tile and sets it to null after harvest
      *
      * @param player the player
-     * @param row    the row value
-     * @param column the column value
      */
-    public void harvestCrop(Player player, int row, int column) {
-        if (this.Crop.isHarvestable && this.hasCrop) {
+    public void harvestCrop(Player player) {
+        if (this.Crop.isHarvestable && this.hasCrop&&!(Crop instanceof FruitTree)) {
             player.coins = player.coins + this.Crop.finalHarvestPrice;
             player.experience = player.experience + (this.Crop.harvestYield * this.Crop.expYield);
             this.Crop = new Crop();
             this.hasCrop = false;
             this.isPlowed = false;
-        } else if (!this.Crop.isHarvestable && this.hasCrop) {
-        } else {
+        }
+        else {
+            player.coins = player.coins + this.Crop.finalHarvestPrice;
+            player.experience = player.experience + (this.Crop.harvestYield * this.Crop.expYield);
         }
     }
 
@@ -143,27 +135,53 @@ public class Plot extends Tile {
     public void plantCrop(Player player, int currentDay) {
         Crop tempCrop=new Crop();
 
-        int Choice = 2;
-        switch (Choice) {
+        int choice = 1;
+        switch (kh.cropChoice) {
             case 1 -> {
                 cropName = "Turnip";
-                tempCrop = new Crop(cropName, currentDay,cropImgs);
+                tempCrop = new Crop(cropName, currentDay, cropImageMap);
+                Crop.cropImg=cropImageMap[1][2];
             }
             case 2 -> {
                 cropName = "Carrot";
-                tempCrop = new Crop(cropName, currentDay,cropImgs);
+                tempCrop = new Crop(cropName, currentDay, cropImageMap);
             }
             case 3 -> {
                 cropName = "Potato";
-                tempCrop = new Crop(cropName, currentDay,cropImgs);
+                tempCrop = new Crop(cropName, currentDay, cropImageMap);
+            }
+            case 4 -> {
+                cropName = "Rose";
+                tempCrop = new Flower(cropName, currentDay, cropImageMap);
+            }
+            case 5 -> {
+                cropName = "Tulip";
+                tempCrop = new Flower(cropName, currentDay, cropImageMap);
+            }
+            case 6 -> {
+                cropName = "Sunflower";
+                tempCrop = new Flower(cropName, currentDay, cropImageMap);
+            }
+            case 7 -> {
+                cropName = "Mango";
+                tempCrop = new FruitTree(cropName, currentDay, cropImageMap);
+            }
+            case 8 -> {
+                cropName = "Apple";
+                tempCrop = new FruitTree(cropName, currentDay, cropImageMap);
             }
             default -> System.out.println("Invalid Choice");
         }
         if (!this.isPlowed) {
         } else if (this.hasCrop) {
         } else if (player.coins >= tempCrop.seedPrice) {
-            Crop = new Crop(cropName, currentDay,cropImgs);
-            player.coins = player.coins - Crop.seedPrice;
+            String _class= String.valueOf(tempCrop.getClass());
+            switch (_class){
+                case "class GameProperties.Flower"->Crop=new Flower(cropName,currentDay,cropImageMap);
+                case "class GameProperties.FruitTree"->Crop=new FruitTree(cropName,currentDay,cropImageMap);
+                default -> Crop=new Crop(cropName,currentDay,cropImageMap);
+            }
+            player.coins = player.coins - tempCrop.seedPrice;
             this.hasCrop = true;
             this.isOccupied = true;
         } else {

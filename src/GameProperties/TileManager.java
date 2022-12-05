@@ -36,7 +36,7 @@ public class TileManager {
             for (int j = 0; j < gp.maxScreenColumn; j++) {
                 tiles.get(i).add(new Tile());
                 if((i>=gp.maxScreenRow/4&&i<gp.maxScreenRow*3/4)&&(j>= gp.maxScreenColumn/4&&j<gp.maxScreenColumn*3/4)){
-                    tiles.get(i).set(j,new Plot(gp));
+                    tiles.get(i).set(j,new Plot(gp,kh));
                 }
                 tiles.get(i).get(j).x=i*gp.tileSize;
                 tiles.get(i).get(j).y=j*gp.tileSize;
@@ -86,26 +86,25 @@ public class TileManager {
 
 
     public void setTileImage(){
-        Images img= new Images(gp);
         Integer[] column={1,2,3,5};
         int rnd=0;
         System.out.println();
-        for(int i = 0;i<tiles.size();i++){
-            for (int j = 0; j< tiles.get(i).size();j++){
+        for (List<Tile> tile : tiles) {
+            for (Tile value : tile) {
                 rnd = new Random().nextInt(column.length);
-                tiles.get(i).get(j).img=tileImg[1][column[rnd]];
+                value.img = tileImg[1][column[rnd]];
             }
         }
 
     }
 
     public void draw(Graphics2D g)  {
-        for(int i = 0;i<tiles.size();i++) {
-            for (int j = 0; j < tiles.get(i).size(); j++) {
+        for (List<Tile> tile : tiles) {
+            for (Tile value : tile) {
 
-                g.drawImage(tiles.get(i).get(j).img,tiles.get(i).get(j).x,tiles.get(i).get(j).y,gp.tileSize,gp.tileSize,null);
-                if(tiles.get(i).get(j) instanceof Plot &&((Plot) tiles.get(i).get(j)).hasCrop){
-                    ((Plot)tiles.get(i).get(j)).Crop.draw(g,tiles.get(i).get(j).x,tiles.get(i).get(j).y,gp.tileSize);
+                g.drawImage(value.img, value.x, value.y, gp.tileSize, gp.tileSize, null);
+                if (value instanceof Plot && ((Plot) value).hasCrop) {
+                    ((Plot) value).Crop.draw(g, value.x, value.y, gp.tileSize);
                 }
             }
         }

@@ -79,10 +79,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         super.paintComponent(g);
         Graphics2D g2=(Graphics2D)g;
-        String playerInfo=String.format("%s @>:%d@Lvl:%d",player.name,player.coins,player.level);
+        String playerInfo=String.format("%s @>:%d@Lvl:%d@Day:%d",player.name,player.coins,player.level,player.currentDay);
         tm.draw(g2);
         player.draw(g2);
-        menus.draw(g2,kh.menuPressed,"Controls@1 Plow@2 Water@3 Plant@4 Harvest@5 Fertilize@6 Pickaxe@7 Shovel");
+        menus.draw(g2,kh.menuPressed,"Controls@1 Plow@2 Water@3 Plant@4 Harvest@5 Fertilize@6 Pickaxe@7 Shovel@8 Next Day");
         textBox.draw(g2,kh.menuPressed,playerInfo);
 
         g2.dispose();

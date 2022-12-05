@@ -29,10 +29,9 @@ public class Crop {
     public boolean isWithered;
     public int harvestTotal;
     public int finalHarvestPrice;
-    public String type;
     public String name;
     public BufferedImage cropImg;
-    public BufferedImage[][] cropImgs;
+    public BufferedImage[][] cropImageMap;
     Images img;
     GamePanel gp;
     /**
@@ -66,8 +65,8 @@ public class Crop {
      * @param name      the name of the crop used for determining the values
      * @param plantDate the day which the crop is initialized
      */
-    public Crop(String name, int plantDate,BufferedImage[][] cropImgs) {
-        this.cropImgs=cropImgs;
+    public Crop(String name, int plantDate,BufferedImage[][] cropImageMap) {
+        this.cropImageMap =cropImageMap;
         this.name = name;
         this.waterCount = 0;
         this.fertCount = 0;
@@ -82,7 +81,6 @@ public class Crop {
                 this.seedPrice = 5;
                 this.sellingCost = 6;
                 this.expYield = 5;
-                this.type = "Root Crop";
                 this.productionMin = 1;
                 this.productionMax = 2;
                 this.harvestTime = 2;
@@ -90,13 +88,12 @@ public class Crop {
                 this.fertilizerMax = 1;
                 this.waterMax = 2;
                 this.waterNeed = 1;
-                this.cropImg=cropImgs[1][2];
+                this.cropImg=cropImageMap[1][2];
             }
             case "Carrot" -> {
                 this.seedPrice = 10;
                 this.sellingCost = 9;
                 this.expYield = 7.5f;
-                this.type = "Root Crop";
                 this.productionMin = 1;
                 this.productionMax = 2;
                 this.harvestTime = 3;
@@ -104,13 +101,12 @@ public class Crop {
                 this.fertilizerMax = 1;
                 this.waterMax = 2;
                 this.waterNeed = 1;
-                this.cropImg=cropImgs[1][4];
+                this.cropImg=cropImageMap[1][4];
             }
             case "Potato" -> {
                 this.seedPrice = 20;
                 this.sellingCost = 3;
                 this.expYield = 12.5f;
-                this.type = "Root Crop";
                 this.productionMin = 1;
                 this.productionMax = 10;
                 this.harvestTime = 5;
@@ -118,7 +114,7 @@ public class Crop {
                 this.fertilizerMax = 2;
                 this.waterMax = 4;
                 this.waterNeed = 3;
-                this.cropImg=cropImgs[1][6];
+                this.cropImg=cropImageMap[1][6];
             }
         }
         this.harvestYield = getRandomNumber(productionMin, productionMax + 1);
