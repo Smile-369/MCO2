@@ -18,7 +18,7 @@ public class Main {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setTitle("Farming Simulator");
         window.setResizable(false);
-        GamePanel gp= new GamePanel();
+        GamePanel gp = new GamePanel();
         window.add(gp);
         window.pack();
 

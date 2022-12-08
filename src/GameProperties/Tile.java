@@ -6,7 +6,8 @@ public class Tile {
     public boolean hasCollision;
     public BufferedImage img;
     public int x, y;
-    public Tile(){
+
+    public Tile() {
 
     }
 }

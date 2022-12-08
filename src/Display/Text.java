@@ -5,47 +5,47 @@ import GameProperties.TileManager;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Text{
+public class Text {
     GamePanel gp;
     KeyHandler kh;
     TileManager tm;
     BufferedImage[][] characters;
-    BufferedImage[] ascii=new BufferedImage[200];
+    BufferedImage[] ascii = new BufferedImage[200];
     Images img;
-    Text(GamePanel gp, KeyHandler kh, TileManager tm){
-        this.gp=gp;
-        this.kh=kh;
-        this.tm=tm;
-        img=new Images(gp);
-        img.imagemapSet("/res/Fonts/fonts.png",8);
-        characters=img.tileImg;
+
+    Text(GamePanel gp, KeyHandler kh, TileManager tm) {
+        this.gp = gp;
+        this.kh = kh;
+        this.tm = tm;
+        img = new Images(gp);
+        img.imagemapSet("/res/Fonts/fonts.png", 8);
+        characters = img.tileImg;
         setAscii();
     }
-    public void setAscii(){
+
+    public void setAscii() {
         int i;
-        for(i = 0 ; i < 65; i ++){
-            ascii[i]= characters[4][17];
+        for (i = 0; i < 65; i++) {
+            ascii[i] = characters[4][17];
         }
 
-        for(i = '0'; i<= 'z'; i ++){
-            if(i<='C'){
-                ascii[i]=characters[1][(i-'0'+1)];
-            }
-            else if(i>='D'&&i<='W') {
-                ascii[i]=characters[2][i-'D'+1];
-            }
-            else if(i>='X'&&i<='k') {
-                ascii[i]=characters[3][i-'X'+1];
-            }
-            else if(i>='l'&&i<='}') {
-                ascii[i]=characters[4][i-'l'+1];
+        for (i = '0'; i <= 'z'; i++) {
+            if (i <= 'C') {
+                ascii[i] = characters[1][(i - '0' + 1)];
+            } else if (i <= 'W') {
+                ascii[i] = characters[2][i - 'D' + 1];
+            } else if (i <= 'k') {
+                ascii[i] = characters[3][i - 'X' + 1];
+            } else {
+                ascii[i] = characters[4][i - 'l' + 1];
             }
         }
     }
-    public void draw(Graphics2D g, String word,int x,int y,int scale){
-        for(int i = 0; i< word.length();i++){
-            char ch= word.charAt(i);
-            g.drawImage(ascii[(int)ch],x+(i*(gp.tileSize*3/4)/scale)-(gp.tileSize/5),y-gp.tileSize/4,gp.tileSize/scale,gp.tileSize/scale,null);
+
+    public void draw(Graphics2D g, String word, int x, int y, int scale) {
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+            g.drawImage(ascii[ch], x + (i * (gp.tileSize * 3 / 4) / scale) - (gp.tileSize / 5), y - gp.tileSize / 4, gp.tileSize / scale, gp.tileSize / scale, null);
         }
     }
 }
