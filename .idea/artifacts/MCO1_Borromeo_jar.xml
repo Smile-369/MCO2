@@ -2,7 +2,7 @@
   <artifact type="jar" build-on-make="true" name="MCO1_Borromeo:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/MCO1_Borromeo_jar</output-path>
     <root id="archive" name="MCO1_Borromeo.jar">
-      <element id="module-output" name="MCO1_Borromeo" />
+      <element id="module-output" name="MCO2_Borromeo" />
     </root>
   </artifact>
 </component>
