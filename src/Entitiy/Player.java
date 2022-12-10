@@ -13,14 +13,16 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * the player class which inherits from entity that can freely act in the space based on the keys pressed
+ */
 
 public class Player extends Entity {
     public boolean tileInteracted;
     public int coins;
-    public int level;
+    public int level=1;
     public float experience;
-    public String name;
-    public int currentDay = 1;
+    public int currentDay ;
     public FarmerType farmerType = new FarmerType(this, "Farmer");
     public String message = "";
     GamePanel gp;
@@ -40,6 +42,12 @@ public class Player extends Entity {
 
     }
 
+    /**
+     * This constructor gets the values from of the keyhandler tile manage and the game panel
+     * @param gp GamePanel Class
+     * @param kh KeyHandler Class
+     * @param tm TileManager Class
+     */
     public Player(GamePanel gp, KeyHandler kh, TileManager tm) {
         this.kh = kh;
         this.gp = gp;
@@ -52,39 +60,36 @@ public class Player extends Entity {
     }
 
     /**
-     * Initializes the starting values of the player and sets the player's name based on input
+     * Initializes the starting values of the player
      *
-     * @param name name of the player
+     *
      */
-    public Player(String name) {
-        this.coins = 100;
-        this.level = 0;
-        this.experience = 0;
-        this.name = name;
-        setDefaultValues();
-
-    }
-
     public void setDefaultValues() {
+        this.currentDay=1;
         this.x = (gp.screenWidth / 2);
         this.y = (gp.screenHeight / 2);
         this.speed = 4;
-        this.coins = 10000;
+        this.coins = 100;
         this.level = 0;
         this.experience = 0;
     }
 
-    public void setCropImages() {
+    /**
+     * sets the crop imagemap to be used by previews when planting tiles
+     */
+    private void setCropImages() {
         Images cropImage = new Images(gp);
         cropImage.imagemapSet("/res/Tiles/Crops.png", 4);
         cropImageMap = cropImage.tileImg;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public int getColumn(int number) {
+    /**
+     * gets the column in which the animation sprite occurs
+     * @param number
+     * @return
+     */
+    private int getColumn(int number) {
         int column = 0;
         if (number < 15) {
             column = 1;
@@ -95,6 +100,9 @@ public class Player extends Entity {
 
     }
 
+    /**
+     * updates the player sprite movement, and the day
+     */
     public void update() {
         plotInteraction();
         for (List<Tile> tile : tm.tiles) {
@@ -103,7 +111,6 @@ public class Player extends Entity {
                     ((Plot) value).checkPlantStats(currentDay);
                 }
             }
-
         }
         checkLevel();
         if (!kh.menuPressed) {
@@ -116,12 +123,18 @@ public class Player extends Entity {
 
     }
 
-    public void nexDay() {
+    /**
+     * changes the day
+     */
+    private void nexDay() {
         currentDay++;
         kh.choice = 0;
     }
 
-    public void movement() {
+    /**
+     * movement of the player
+     */
+    private void movement() {
         for (int i = 0; i < 4; i++) {
             if (imageCount[i] > 30) {
                 imageCount[i] = 1;
@@ -168,7 +181,14 @@ public class Player extends Entity {
         }
     }
 
-    public boolean timedBoolean(int duration) {
+    /**
+     * timed boolean for when a text popup occurs when an action happens
+     * @param duration
+     * @param condition
+     * @return
+     */
+
+    public boolean timedBoolean(int duration,boolean condition) {
         if (tileInteracted) {
             start = System.nanoTime();
             return true;
@@ -176,6 +196,9 @@ public class Player extends Entity {
         return System.nanoTime() - start < TimeUnit.MILLISECONDS.toNanos(duration);
     }
 
+    /**
+     * interactions with the plot
+     */
     public void plotInteraction() {
         for (int i = 0; i < tm.tiles.size(); i++) {
             for (int j = 0; j < tm.tiles.get(i).size(); j++) {
@@ -186,30 +209,40 @@ public class Player extends Entity {
                             if (tm.tiles.get(i).get(j) instanceof Plot) {
                                 ((Plot) tm.tiles.get(i).get(j)).plowTile(this);
                                 tileInteracted = true;
+                            }else {
+                                message="unable to interact with a@rock";
                             }
                         }
                         case 2 -> {
                             if (tm.tiles.get(i).get(j) instanceof Plot) {
                                 ((Plot) tm.tiles.get(i).get(j)).waterCrop(this);
                                 tileInteracted = true;
+                            }else {
+                                message="unable to interact with a@rock";
                             }
                         }
                         case 3 -> {
                             if (tm.tiles.get(i).get(j) instanceof Plot) {
-                                ((Plot) tm.tiles.get(i).get(j)).plantCrop(this, currentDay);
+                                ((Plot) tm.tiles.get(i).get(j)).plantCrop(this, currentDay,new Tile[]{tm.tiles.get(i+1).get(j),tm.tiles.get(i-1).get(j),tm.tiles.get(i).get(j+1),tm.tiles.get(i).get(j-1)});
                                 tileInteracted = true;
+                            }else {
+                                message="unable to interact with a@rock";
                             }
                         }
                         case 4 -> {
                             if (tm.tiles.get(i).get(j) instanceof Plot) {
                                 ((Plot) tm.tiles.get(i).get(j)).harvestCrop(this);
                                 tileInteracted = true;
+                            }else {
+                                message="unable to interact with a@rock";
                             }
                         }
                         case 5 -> {
                             if (tm.tiles.get(i).get(j) instanceof Plot) {
                                 ((Plot) tm.tiles.get(i).get(j)).fertilizeCrop(this);
                                 tileInteracted = true;
+                            }else {
+                                message="unable to interact with a@rock";
                             }
                         }
                         case 6 -> {
@@ -220,15 +253,19 @@ public class Player extends Entity {
                                 experience += 15;
                                 tm.tiles.get(i).get(j).x = i * gp.tileSize;
                                 tm.tiles.get(i).get(j).y = j * gp.tileSize;
-                                message = "fuck";
+                                message = "You have successfully@removed a Rock";
                                 counter++;
                                 tileInteracted = true;
+                            }else {
+                                message="There is no Rock to@be removed here";
                             }
                         }
                         case 7 -> {
                             if (tm.tiles.get(i).get(j) instanceof Plot) {
                                 ((Plot) tm.tiles.get(i).get(j)).shovel(this);
                                 tileInteracted = true;
+                            }else {
+                                message="unable to interact with a@rock";
                             }
                         }
                     }
@@ -244,7 +281,10 @@ public class Player extends Entity {
         }
     }
 
-
+    /**
+     * draws the player
+     * @param g
+     */
     public void draw(Graphics2D g) {
 
 
@@ -275,30 +315,47 @@ public class Player extends Entity {
     }
 
     /**
-     * checks and calculates the level of the player based the experience value
+     * Checks level of the player
+     * @return true if level changed
+     * @return true if player has enough to change farmerTypes
      */
-    public void checkLevel() {
+    public boolean checkLevel() {
         int originalLevel = this.level;
         char temp = String.format("%03d", (int) this.experience).charAt(0);
         this.level = Integer.parseInt(String.valueOf(temp));
-        if (originalLevel != this.level) {
-            System.out.println("Congratulations your level changed from " + originalLevel + " to " + this.level);
+        if(setFarmerType()){
+            message=String.format("You are now a %s",farmerType.title);
+            return setFarmerType();
         }
+        if (originalLevel != this.level) {
+            message="Level Up";
+            return true;
+        }
+        return false;
     }
 
-    public void setFarmerType() {
-        if (level >= 5 && farmerType.level < 1) {
+    /**
+     * changes the players farmer type when coditions are set
+     * @return true when the player changes farmer type
+     */
+
+    public boolean setFarmerType() {
+        if (level >= 5 && farmerType.level < 1&&coins>250) {
             farmerType = new FarmerType(this, "Registered");
             coins -= 200;
+            return true;
         }
-        if (level >= 1 && farmerType.level < 2) {
+        if (level >= 10 && farmerType.level < 2&&coins>350) {
             farmerType = new FarmerType(this, "Distinguished");
             coins -= 300;
+            return true;
         }
-        if (level >= 1 && farmerType.level < 3) {
+        if (level >= 15 && farmerType.level < 3&&coins>450) {
             farmerType = new FarmerType(this, "Legendary");
             coins -= 400;
+            return true;
         }
+        return false;
     }
 
 

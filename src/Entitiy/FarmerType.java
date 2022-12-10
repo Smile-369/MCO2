@@ -1,5 +1,8 @@
 package Entitiy;
 
+/**
+ * the type of famer and the bonuses that come with it
+ */
 public class FarmerType {
     public final int bonusEarning;
     public final int seedCostReduc;

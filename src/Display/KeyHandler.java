@@ -3,6 +3,9 @@ package Display;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * is class implements key listener and sets certain values to true when a key event occurs
+ */
 public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, rightPressed, leftPressed, cPressed, xPressed, menuPressed, sPressed, aPressed;
     public boolean[] numPressed = new boolean[9];
@@ -14,6 +17,10 @@ public class KeyHandler implements KeyListener {
 
     }
 
+    /**
+     * checks to see if a key is pressed and if it is sets its corresponding value to true
+     * @param e the event to be processed
+     */
     @Override
     public void keyPressed(KeyEvent e) {
 
@@ -118,6 +125,10 @@ public class KeyHandler implements KeyListener {
 
     }
 
+    /**
+     * checks to see if a key is released and sets its corresponding value to false
+     * @param e the event to be processed
+     */
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();

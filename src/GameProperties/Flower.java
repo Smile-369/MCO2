@@ -2,6 +2,9 @@ package GameProperties;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * flower crop
+ */
 public class Flower extends Crop {
     public Flower(String name, int plantDate, BufferedImage[][] cropImageMap) {
         this.cropImageMap = cropImageMap;
@@ -58,6 +61,10 @@ public class Flower extends Crop {
         this.harvestYield = getRandomNumber(productionMin, productionMax + 1);
         this.harvestTotal = this.harvestYield * this.sellingCost;
     }
+
+    /**
+     * uses crops generate harvest price but adds a 10% multiplier
+     */
 
     @Override
     public void generateHarvestPrice() {

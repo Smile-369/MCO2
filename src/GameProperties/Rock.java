@@ -2,7 +2,9 @@ package GameProperties;
 
 import Display.Images;
 
-
+/**
+ * Rock tiles act as a obstacle that stops you from plowing or planting
+ */
 public class Rock extends Tile {
     TileManager tm;
     int hasRock;

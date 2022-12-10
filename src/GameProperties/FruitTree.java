@@ -3,7 +3,17 @@ package GameProperties;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * fruit trees
+ */
 public class FruitTree extends Crop {
+    /**
+     * same method of declaring as root crops and the only thing that is changed is the switch case conditions
+     * @param name
+     * @param plantDate
+     * @param cropImages
+     */
+
     public FruitTree(String name, int plantDate, BufferedImage[][] cropImages) {
         this.name = name;
         this.cropImageMap = cropImages;
@@ -42,6 +52,27 @@ public class FruitTree extends Crop {
         }
         this.harvestYield = getRandomNumber(productionMin, productionMax + 1);
         this.harvestTotal = this.harvestYield * this.sellingCost;
+    }
+
+    /**
+     * checks the adjacent tiles if there is a rock or a crop beside it, that includes withered crops
+     * @param adjacent
+     * @return
+     */
+    public boolean checkAdjacent(Tile[] adjacent){
+        int i;
+        for(i =0; i <adjacent.length;i++){
+            if (adjacent[i] instanceof Rock) {
+                return false;
+            }
+        }
+        for(i =0; i <adjacent.length;i++){
+            if (adjacent[i] instanceof Plot&&((Plot)adjacent[i]).hasCrop){
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
+/**
+ * Manages and creates a 2D list for tiles
+ */
 public class TileManager {
     public List<List<Tile>> tiles = new ArrayList<>();
     GamePanel gp;
@@ -28,6 +30,10 @@ public class TileManager {
         img.imagemapSet("/res/Tiles/Tilemap1.png", 4);
         this.tileImg = img.tileImg;
     }
+
+    /**
+     * initializes the tiles
+     */
 
     public void initTiles() {
         for (int i = 0; i < gp.maxScreenRow; i++) {
@@ -47,10 +53,17 @@ public class TileManager {
 
     }
 
+    /**
+     * updates the Plot in case there are changes to its Crops and sprites
+     */
+
     public void update() {
         setPlots();
     }
 
+    /**
+     * Sets which tiles are Rocks in the space for plots based on a text file
+     */
     public void setRocks() {
         int[] corners = {tiles.size() / 4, tiles.size() * 3 / 4, tiles.get(1).size() / 4, tiles.get(1).size() * 3 / 4};
         int k = 0;
@@ -81,6 +94,9 @@ public class TileManager {
 
     }
 
+    /**
+     * sets the sprites of the plots
+     */
     public void setPlots() {
         int[] corners = {tiles.size() / 4, tiles.size() * 3 / 4, tiles.get(1).size() / 4, tiles.get(1).size() * 3 / 4};
         for (int i = corners[0]; i < corners[1]; i++) {
@@ -116,7 +132,9 @@ public class TileManager {
         }
     }
 
-
+    /**
+     * sets the images for the non plot Tiles outside of the plot space
+     */
     public void setTileImage() {
         Integer[] column = {1, 2, 3, 5};
         int rnd;
@@ -130,6 +148,10 @@ public class TileManager {
 
     }
 
+    /**
+     * draws all the Tiles
+     * @param g
+     */
     public void draw(Graphics2D g) {
         for (List<Tile> tile : tiles) {
             for (Tile value : tile) {

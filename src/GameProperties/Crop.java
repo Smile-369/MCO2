@@ -5,6 +5,10 @@ import Display.Images;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * all the methods for all crops and counts ase root crops, which can be considered the default crops
+ */
+
 public class Crop {
     public int seedPrice;
     public float expYield;
@@ -36,6 +40,7 @@ public class Crop {
      * this constructor sets everything to null and sets the booleans to false
      */
     public Crop() {
+        this.name="";
         this.isHarvestable = false;
         this.isWatered = false;
         this.hasBonus = false;
@@ -50,6 +55,7 @@ public class Crop {
      *
      * @param name      the name of the crop used for determining the values
      * @param plantDate the day which the crop is initialized
+     * @param cropImageMap the imagemap of the crops
      */
     public Crop(String name, int plantDate, BufferedImage[][] cropImageMap) {
         this.cropImageMap = cropImageMap;
@@ -131,6 +137,7 @@ public class Crop {
      *
      * @param min the minimum valve of the for the range of random number
      * @param max the maximum value of the random number
+     * @returns a random integer
      */
     public int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
@@ -157,6 +164,14 @@ public class Crop {
             this.isWithered = true;
         }
     }
+
+    /**
+     * draws the crop at a specific x and y value
+     * @param g
+     * @param x
+     * @param y
+     * @param tileSize
+     */
 
     public void draw(Graphics2D g, int x, int y, int tileSize) {
         g.drawImage(this.cropImg, x, y, tileSize, tileSize, null);

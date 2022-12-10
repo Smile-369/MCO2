@@ -5,6 +5,10 @@ import GameProperties.TileManager;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * Fonts
+ */
+
 public class Text {
     GamePanel gp;
     KeyHandler kh;
@@ -22,6 +26,10 @@ public class Text {
         characters = img.tileImg;
         setAscii();
     }
+
+    /**
+     * sets the sprites into an array of BufferedImages where its index value is its ASCII Value
+     */
 
     public void setAscii() {
         int i;
@@ -42,6 +50,14 @@ public class Text {
         }
     }
 
+    /**
+     * draws the text
+     * @param g
+     * @param word
+     * @param x
+     * @param y
+     * @param scale
+     */
     public void draw(Graphics2D g, String word, int x, int y, int scale) {
         for (int i = 0; i < word.length(); i++) {
             char ch = word.charAt(i);

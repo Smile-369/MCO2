@@ -4,6 +4,9 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * this class handles the sprites for the gamem
+ */
 public class Images {
     public BufferedImage[][] tileImg;
     GamePanel gp;
@@ -16,6 +19,11 @@ public class Images {
         this.gp = gp;
     }
 
+    /**
+     * gets an image using Image io
+     * @param name the file name
+     * @return
+     */
     public BufferedImage getImage(String name) {
         BufferedImage image = null;
         try {
@@ -26,6 +34,14 @@ public class Images {
         return image;
     }
 
+    /**
+     * gets a sub image from an image
+     * @param row location in the image
+     * @param column location in the image
+     * @param fileName
+     * @param scale size of the nxn where n = 64/scale
+     * @return
+     */
     public BufferedImage getSubImage(int row, int column, String fileName, int scale) {
 
         BufferedImage image = getImage(fileName);
@@ -33,6 +49,11 @@ public class Images {
         return image.getSubimage((column * size) - size, (row * size) - size, size, size);
     }
 
+    /**
+     * sets the images from a spritemap into an array of Buffered images
+     * @param Filename
+     * @param scale size of the nxn where n = 64/scale
+     */
     public void imagemapSet(String Filename, int scale) {
         int tileHeight = getImage(Filename).getHeight() / (gp.tileSize / scale);
         int tileWidth = getImage(Filename).getWidth() / (gp.tileSize / scale);
